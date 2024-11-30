@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Add Post</title>
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <!-- Include stylesheet -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="add-post">
+        <h1>Add New Post</h1>
+        <form action="/add" method="post">
+          <input type="text" name="title" placeholder="Name" id="" required />
+          <select name="category" id="category" required>
+              <option value="" disabled selected>Select Category</option>
+              <option value="Family">Family</option>
+              <option value="Love">Love</option>
+              <option value="Friendship">Friendship</option>
+              <option value="Life">Life</option>
+              <option value="Challenges">Challenges</option>
+              <option value="Sacrifices">Sacrifices</option>
+          </select>
+          <button type="button" id="generate-button">Generate Image</button>
+          <div id="generated-image-container" style="margin-top: 1rem;"></div>
+          <input type="hidden" name="image" id="image" />
+          <div id="editor-container" style="height: 200px;"></div>
+          <input type="hidden" name="content" id="content" />
+          <button type="submit">Add Post</button>
+      </form>
+        <a href="/">Back To Home</a>
+    </div>
+    <!-- Include the Quill library -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+        });
+        var form = document.querySelector('form');
+        form.onsubmit = function (event) {
+            event.preventDefault(); // Prevent default form submission for testing
+            var content = document.querySelector('input[name=content]');
+            content.value = quill.root.innerHTML;
+
+            var image = document.querySelector('input[name=image]').value;
+            console.log("Form content:", {
+                title: form.title.value,
+                category: form.category.value,
+                content: content.value,
+                image: image,
+            });
+
+            // You can remove the line below after confirming it works
+            form.submit(); // Uncomment to allow the actual submission
+        };
+
+
+        var questionCards = {
+            "Family": [
+                "/Questions/family/family1.png",
+                "/Questions/family/family2.png",
+                "/Questions/family/family3.png"
+            ],
+            "Love": [
+                "/Questions/love/love1.png",
+                "/Questions/love/love2.png",
+                "/Questions/love/love3.png"
+            ],
+            "Friendship": [
+                "/Questions/friendship/friendship1.png",
+                "/Questions/friendship/friendship2.png",
+                "/Questions/friendship/friendship3.png"
+            ],
+            "Life": [
+                "/Questions/life/life1.png",
+                "/Questions/life/life2.png",
+                "/Questions/life/life3.png"
+            ],
+            "Challenges": [
+                "/Questions/challenges/challenges1.png",
+                "/Questions/challenges/challenges2.png",
+                "/Questions/challenges/challenges3.png"
+            ],
+            "Sacrifices": [
+                "/Questions/sacrifices/sacrifices1.png",
+                "/Questions/sacrifices/sacrifices2.png",
+                "/Questions/sacrifices/sacrifices3.png"
+            ]
+        };
+
+        document.getElementById('generate-button').addEventListener('click', function () {
+            var category = document.getElementById('category').value;
+            if (category && questionCards[category]) {
+                var images = questionCards[category];
+                var randomImage = images[Math.floor(Math.random() * images.length)];
+                var imageContainer = document.getElementById('generated-image-container');
+                imageContainer.innerHTML = '<img src="' + randomImage + '" alt="Generated Image" style="max-width: 100%;">';
+                // Set the value of the hidden image input
+                var imageInput = document.getElementById('image');
+                imageInput.value = randomImage;
+                console.log("Generated image path set to:", imageInput.value); // Debugging
+            } else {
+                alert('Please select a valid category.');
+            }
+        });
+    </script>
+  </body>
+</html>

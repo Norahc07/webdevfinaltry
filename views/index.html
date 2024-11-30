@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Final Project WebDev</title>
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Box Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="nav container">
+        <!-- Logo -->
+         <a href="/" class="logo">Comfort<span>Kita</span></a>
+         <!-- Nav Right -->
+          <div class="nav-right">
+            <a href="/admin" class="admin-btn"><i class='bx bx-user'></i></a>
+            <a href="/add" class="write-btn"><i class='bx bx-pencil' ></i>Write</a>
+          </div>
+       </div>
+    </header>
+    <!-- Home -->
+    <section class="home" id="home">
+      <div class="home-content">
+        <H2 style="font-style: italic;">Sa'yong Isip at Puso'y, <br> Mag papaginhawa</H2>
+        <!-- Search Box -->
+         <div class="search-box">
+          <i class='bx bx-search' ></i>
+          <input type="search" name="" id="" placeholder="Search" />
+         </div>
+      </div>
+    </section>
+    <!-- Post Filter -->
+     <div class="post-filter container">
+        <span class="filter-item active-filter" data-filter="all">All</span>
+        <span class="filter-item" data-filter="Family">Family</span>
+        <span class="filter-item" data-filter="Love">Love</span>
+        <span class="filter-item" data-filter="Friendship">Friendship</span>
+        <span class="filter-item" data-filter="Life">Life</span>
+        <span class="filter-item" data-filter="Challenges">Challenges</span>
+        <span class="filter-item" data-filter="Sacrifices">Sacrifices</span>
+     </div>
+    <!-- Posts -->
+     <section class="posts container" id="posts">
+        <!-- Post Will Show here -->
+     </section>
+     <!-- Footer -->
+      <div class="footer container">
+        <p>&#169; LA-creation</p>
+        <div class="social">
+          <a href="https://www.facebook.com/luigi.amarillo"><i class='bx bxl-facebook'></i></a>
+          <a href="#"><i class='bx bxl-twitter'></i></a>
+          <a href="https://www.instagram.com/iamluigiamarillo/>"><i class='bx bxl-instagram'></i></a>
+          <a href="https://www.linkedin.com/in/luigi-amarillo-0a61a9276/>"><i class='bx bxl-linkedin'></i></a>
+        </div>
+      </div>
+      <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
+      </script>
+    <!-- Link To JS -->
+    <script src="/js/main.js"></script>
+    <script>
+      // Filter JS
+      $(document).ready(function () {
+        $('.filter-item').click(function () {
+          const value = $(this).attr('data-filter');
+          if (value == 'all') {
+            $('.post').show('1000');
+          } else {
+            $('.post').not('.' + value).hide('1000');
+            $('.post').filter('.' + value).show('1000');
+          }
+        });
+        // Active Button
+        $('.filter-item').click(function () {
+          $(this).addClass('active-filter').siblings().removeClass('active-filter');
+        });
+      });
+    </script>
+  </body>
+</html>

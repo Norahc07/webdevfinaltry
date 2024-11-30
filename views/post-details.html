@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Post Details</title>
+    <!-- Link to CSS -->
+    <link rel="stylesheet" href="/css/style.css"/>
+    <!-- Box Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'/>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+        <div class="nav container">
+          <!-- Logo -->
+           <a href="/" class="logo">Comfort<span>Kita</span></a>
+           <!-- Nav Right -->
+            <div class="nav-right">
+              <a href="/admin" class="admin-btn"><i class='bx bx-user'></i></a>
+              <a href="/add" class="write-btn"><i class='bx bx-pencil' ></i>Write</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <section class="post-header">
+        <div class="header-content post-container">
+            <h2 id="post-category"></h2>
+            <!-- Title -->
+             <h1 class="header-title" id="post-title"></h1>
+             <div id="post-image"></div>
+        </div>
+    </section>
+    <section class="post-content post-container" id="post-content"></section>
+
+    <!-- Share -->
+    <div class="share post-container">
+        <span class="share-title">Share this Insights!</span>
+        <div class="social">
+            <a id="facebook-share" target="_blank"><i class='bx bxl-facebook'></i></a>
+            <a id="twitter-share" target="_blank"><i class='bx bxl-twitter'></i></a>
+            <a id="instagram-share" target="_blank"><i class='bx bxl-instagram'></i></a>
+            <a id="linkedin-share" target="_blank"><i class='bx bxl-linkedin'></i></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer container">
+        <p>&#169; LA-creation</p>
+        <div class="social">
+          <a href="https://www.facebook.com/luigi.amarillo"><i class='bx bxl-facebook'></i></a>
+          <a href="#"><i class='bx bxl-twitter'></i></a>
+          <a href="https://www.instagram.com/iamluigiamarillo/>"><i class='bx bxl-instagram'></i></a>
+          <a href="https://www.linkedin.com/in/luigi-amarillo-0a61a9276/>"><i class='bx bxl-linkedin'></i></a>
+        </div>
+      </div>
+    <!-- Link To JS -->
+     <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const postTitle = decodeURIComponent(
+                window.location.pathname.split('/').pop()
+            )
+            .replace(/-/g, ' ')
+            .trim();
+            fetch(`/post/${encodeURIComponent(postTitle)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`)
+                }
+                return response.json();
+            })
+            .then((post) => {
+                document.getElementById('post-title').innerText = post.title;
+                document.getElementById('post-category').innerText = post.category;
+                if (post.image) {
+                    document.getElementById(
+                        'post-image'
+                    ).innerHTML = `<img src="${post.image}" alt="${post.title}">`;
+                }
+                document.getElementById('post-content').innerHTML = post.content;
+            })
+            .catch((error) => {
+                console.error('Error fetching post details:', error);
+                document.getElementById('post-content').innerText = 'Error fetching post details';
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const postTitle = decodeURIComponent(
+                window.location.pathname.split('/').pop()
+            )
+            .replace(/-/g, ' ')
+            .trim();
+            
+            const postUrl = window.location.href;
+    
+            // Fetch post details
+            fetch(`/post/${encodeURIComponent(postTitle)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.statusText}`)
+                    }
+                    return response.json();
+                })
+                .then((post) => {
+                    // Set post content
+                    document.getElementById('post-title').innerText = post.title;
+                    document.getElementById('post-category').innerText = post.category;
+                    if (post.image) {
+                        document.getElementById(
+                            'post-image'
+                        ).innerHTML = `<img src="${post.image}" alt="${post.title}">`;
+                    }
+                    document.getElementById('post-content').innerHTML = post.content;
+    
+                    // Generate share links
+                    const encodedPostUrl = encodeURIComponent(postUrl);
+                    const encodedTitle = encodeURIComponent(post.title);
+    
+                    document.getElementById('facebook-share').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedPostUrl}`;
+                    document.getElementById('twitter-share').href = `https://twitter.com/intent/tweet?url=${encodedPostUrl}&text=${encodedTitle}`;
+                    document.getElementById('linkedin-share').href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedPostUrl}`;
+                    document.getElementById('instagram-share').href = `https://www.instagram.com/`; // Instagram doesn't support direct sharing via URL
+                })
+                .catch((error) => {
+                    console.error('Error fetching post details:', error);
+                    document.getElementById('post-content').innerText = 'Error fetching post details';
+                });
+        });
+    </script>
+  </body>
+</html>
